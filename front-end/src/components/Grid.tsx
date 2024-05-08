@@ -17,7 +17,7 @@ const Table = styled.table`
     background-color: #cecece;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    margin: 20px auto
+    margin: 20px auto;
     word-break: break-word;
     overflow: hidden;
 `;
@@ -69,6 +69,7 @@ interface User {
     id: string;
     nome: string;
     telefone: string;
+    email: string;
     tipoDeProfissional: string;
     descricao: string;
     situacao: boolean;
@@ -104,6 +105,7 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
                 <Tr>
                    <Th>Nome</Th>
                    <Th>Telefone</Th>
+                   <Th>E-mail</Th>
                    <Th>Tipo de Profissão</Th>
                    <Th onlyWeb>Descrição</Th>
                    <Th>Situação</Th>
@@ -121,9 +123,10 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
                     <Tr key={i}>
                         <Td width="15%">{item.nome}</Td>
                         <Td width="10%">{item.telefone}</Td>
+                        <Td width="10%">{item.email}</Td>
                         <Td width="15%">{item.tipoDeProfissional}</Td>
                         <Td width="20%">{item.descricao}</Td>
-                        <Td width="10%">{item.situacao}</Td>
+                        <Td width="5%">{item.situacao ? 'Ativo' : 'Desativado'}</Td>
                         <Td width="10%">{format(parseISO(item.createdAt), 'dd/MM/yy')}</Td>
                         <Td width="10%">{format(parseISO(item.updatedAt), 'dd/MM/yy')}</Td>
 
