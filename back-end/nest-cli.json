@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": false,
+          "introspectComments": true,
+          "dtoFileNameSuffix": [".dto.ts", ".entity.ts", ".body.ts"],
+          "dtoFileNameSuffixOptions": {
+            ".dto.ts": {
+              "dtoFileNameSuffix": ".dto.ts",
+              "dtoFileNameSuffixOptions": {
+                ".entity.ts": {
+                  "dtoFileNameSuffix": ".entity.ts",
+                  "dtoFileNameSuffixOptions": {
+                    ".body.ts": {
+                      "dtoFileNameSuffix": ".body.ts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dtoKeyOfComments": {
+            "dtoKey": "dto",
+            "dtoKeyOptions": {
+              "entity": "entity",
+              "body": "body"
+            },
+            "ApiProperty": "description"
+          },
+          "dtoKeyOfCommentsOptions": {
+            "dtoKey": "dto",
+            "dtoKeyOptions": {
+              "entity": "entity",
+              "body": "body"
+            },
+            "ApiOperation": "description"
+          }
+        }
+      }
+    ]
+  }
+}
