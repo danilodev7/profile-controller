@@ -13,26 +13,30 @@ const Table = styled.table`
     width: 100%;
     max-width: 1200px;
     border-collapse: collapse;
-    margin-top: 20px;
     background-color: #cecece;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     margin: 20px auto;
+    padding: 20px;
     word-break: break-word;
     overflow: hidden;
 `;
 
 //ESTILIZAÇÃO DO COMPONENTE THEAD
-export const Thead = styled.thead`
+export const Thead = styled.section`
     background-color: #333;
     color: #fff;
     display: table-row-group;
+    height: 60px;
 `;
 
 //ESTILIZAÇÃO DO COMPONENTE TBODY
 export const Tbody = styled.tbody`
     background-color: #fff;
     color: #333;
+    max-width: 1200px;
+    max-height: 600px;
+    overflow: auto;
 `;
 
 //ESTILIZAÇÃO DO COMPONENTE TR
@@ -44,9 +48,10 @@ export const Tr = styled.tr`
 
 //ESTILIZAÇÃO DOS COMPONENTES TH E TD
 export const Th = styled.th<{ onlyWeb?: boolean }>`
-    text-align: start;
+    text-align: center;
     border-bottom: inset;
-    padding-bottom: 10px;
+    padding: 17px 9px;
+    margin: 0 auto;
 
     @media (max-width: 500px) {
         ${(props) => props.onlyWeb && "display: none;"}
@@ -57,7 +62,7 @@ export const Th = styled.th<{ onlyWeb?: boolean }>`
 export const Td = styled.td<{ alignCenter?: boolean; width?: string; onlyWeb?: boolean }>`
     padding-top: 20px;
     text-align: ${(props) => (props.alignCenter ? "center" : "start")};
-    widht: ${(props) => (props.width ? props.width : "auto")};
+    width: ${(props) => (props.width ? props.width : "auto")};
 
      @media (max-width: 500px) {
         ${(props) => props.onlyWeb && "display: none;"}
@@ -121,13 +126,12 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
                 {/*MAPEANDO OS USUÁRIOS E EXIBINDO OS DADOS NA TABELA */}
                 {users.map((item, i) => (
                     <Tr key={i}>
-                        <Td width="15%">{item.nome}</Td>
+                        <Td width="15%" style={{ paddingLeft: '10px' }}>{item.nome}</Td>
                         <Td width="10%">{item.telefone}</Td>
                         <Td width="10%">{item.email}</Td>
                         <Td width="15%">{item.tipoDeProfissional}</Td>
                         <Td width="20%">{item.descricao}</Td>
-                        <Td width="5%">{item.situacao ? 'Ativo' : 'Desativado'}</Td>
-                        <Td width="10%">{format(parseISO(item.createdAt), 'dd/MM/yy')}</Td>
+                        <Td width="10%" style={{ textAlign: 'center' }}>{item.situacao ? 'Ativo' : 'Desativado'}</Td>                        <Td width="10%">{format(parseISO(item.createdAt), 'dd/MM/yy')}</Td>
                         <Td width="10%">{format(parseISO(item.updatedAt), 'dd/MM/yy')}</Td>
 
                         {/*BOTÕES DE EDIÇÃO E EXCLUSÃO */}
