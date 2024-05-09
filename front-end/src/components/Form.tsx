@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
+import styled  from 'styled-components';
 import { toast } from 'react-toastify';
-
+import { MdWarning } from 'react-icons/md';
+import InputMask from 'react-input-mask';
 
 
 //ESTILIZAÇÃO DO COMPONENTE FORMCONTAINER
@@ -13,7 +14,7 @@ const FormContainer = styled.form`
     flex-wrap: wrap;
     gap: 15px;
     background-color: #fff;
-    padding: 20px;
+    padding: 29px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;`;
 
@@ -26,14 +27,28 @@ const InputArea = styled.div`
    //ESTILIZAÇÃO DO COMPONENTE INPUTAREAROW
 const InputAreaRow = styled.div`
     display: flex;
-    width: 100%;
-    align-items: center;
-    flex-direction: row;
-    align-content: center;
+    width: 40%;
+    align-items: flex-start;
+    flex-direction: column;
     justify-content: flex-start;
-    padding: 10px 57px;
+    padding: 10px 0 10px 0;
     gap: 20px;
+    align-content: flex-start;
+
   `;
+
+  //ESTILIZAÇÃO DO COMPONENTE INPUTTEXTAREA
+const InputTextArea = styled.div`
+    display: flex;
+    width: 50%;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px 0 10px 0;
+    gap: 20px;
+    align-content: flex-start;
+    `;
+
 
   //ESTILIZAÇÃO DO COMPONENTE INPUT
 const Input = styled.input`
@@ -45,8 +60,29 @@ const Input = styled.input`
     font-size: 16px;
     margin-top: 5px;
     `;
+
+    const StyledInputMask = styled(InputMask)`
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 5px;
+`;
     
 //ESTILIZAÇÃO DO COMPONENTE INPUTCHECKBOX
+const InputAreaRowCheckbox = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 10px 34px;
+    gap: 20px;
+  `;
+
 const InputCheckbox = styled.input`
 border: 1px solid #ccc;
 border-radius: 5px;
@@ -60,7 +96,7 @@ const Label = styled.label``;
 
 //ESTILIZAÇÃO DO COMPONENTE BUTTON
 const Button = styled.button`
-    width: 100%;
+    width: 94%;
     padding: 10px;
     background-color: #007bff;
     color: #fff;
@@ -83,9 +119,11 @@ type FormProps = {
 };
 
 const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
+    const [isChecked, setIsChecked] = useState(false);
   
     {/* FUNÇÃO PARA TRATAR O ENVIO DO FORMULÁRIO */}
-    
+    const telefoneRef = useRef<HTMLInputElement>(null);
+
     const ref = useRef<{ nome: HTMLInputElement; telefone: HTMLInputElement; email: HTMLInputElement; tipoDeProfissional: HTMLInputElement; descricao: HTMLInputElement; situacao: HTMLInputElement }>(null);
     useEffect(() => {
         if (onEdit) {
@@ -165,29 +203,47 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
         </InputArea>
 
         <InputArea>
-            <Label>Telefone:</Label>
-            <Input name="telefone"/>
-        </InputArea>
+    <Label>Telefone:</Label>
+    <StyledInputMask 
+    mask="+55 99 999999999" 
+    maskChar={null} 
+    alwaysShowMask={true}
+    inputRef={telefoneRef}
+    name="telefone"
+    />
+    </InputArea>
 
         <InputArea>
             <Label>E-mail:</Label>
             <Input name="email" type="email"/>
         </InputArea>
 
-        <InputArea>
+        <InputAreaRow>
             <Label>Tipo de Profissão:</Label>
             <Input name="tipoDeProfissional"/>
-        </InputArea>
+        </InputAreaRow>
 
-        <InputArea>
+        <InputTextArea>
             <Label>Descrição:</Label>
             <Input name="descricao"/>
-        </InputArea>
+        </InputTextArea>
 
-        <InputAreaRow>
+        <InputAreaRowCheckbox>
             <Label>Situação:</Label>
-            <InputCheckbox name="situacao" type="checkbox"/>
-        </InputAreaRow>
+            <InputCheckbox 
+        name="situacao" 
+        type="checkbox" 
+        onChange={(event) => {
+            setIsChecked(event.target.checked);
+            if (event.target.checked) {
+                toast.warn('Situação ativa selecionada');
+            } else {
+                toast.warn('Situação inativa');
+            }
+        }}
+    />
+    {!isChecked && <span><MdWarning size={18} style={{ verticalAlign: 'middle' }}/> Situação inativa</span>}
+        </InputAreaRowCheckbox>
 
         <Button type="submit">Salvar</Button>
     </FormContainer>
