@@ -244,7 +244,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
                 toast.warn('Situação inativa');
             }
         }}
-        required
+        
     />
     {!isChecked && <span><MdWarning size={18} style={{ verticalAlign: 'middle' }}/> Situação inativa</span>}
         </InputAreaRowCheckbox>
