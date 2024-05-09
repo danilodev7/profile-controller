@@ -120,9 +120,9 @@ type FormProps = {
 
 const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
     const [isChecked, setIsChecked] = useState(false);
+    const [telefone, setTelefone] = useState("");
   
     {/* FUNÇÃO PARA TRATAR O ENVIO DO FORMULÁRIO */}
-    const telefoneRef = useRef<HTMLInputElement>(null);
 
     const ref = useRef<{ nome: HTMLInputElement; telefone: HTMLInputElement; email: HTMLInputElement; tipoDeProfissional: HTMLInputElement; descricao: HTMLInputElement; situacao: HTMLInputElement }>(null);
     useEffect(() => {
@@ -190,6 +190,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
         user.situacao.checked = false;
 
         setOnEdit(null);
+        setTelefone("");
         getUsers();
     };
 
@@ -198,8 +199,8 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
     //RETORNO DO COMPONENTE FORM
     <FormContainer ref={ref} onSubmit={handleSubmit}>
         <InputArea>
-            <Label>Nome:</Label>
-            <Input name="nome" />
+            <Label>Nome: <span style={{ color: 'red' }}>*</span></Label>
+            <Input name="nome" placeholder="Nome do profisisonal" required/>
         </InputArea>
 
         <InputArea>
@@ -207,29 +208,31 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
     <StyledInputMask 
     mask="+55 99 999999999" 
     maskChar={null} 
-    alwaysShowMask={true}
-    inputRef={telefoneRef}
+    alwaysShowMask={false}
     name="telefone"
+    value={telefone}
+    onChange={e => setTelefone(e.target.value)}
+    placeholder="+55 99 999999999"
     />
     </InputArea>
 
         <InputArea>
             <Label>E-mail:</Label>
-            <Input name="email" type="email"/>
+            <Input name="email" type="email" placeholder="Endereço de e-mail do profissional"/>
         </InputArea>
 
         <InputAreaRow>
-            <Label>Tipo de Profissão:</Label>
-            <Input name="tipoDeProfissional"/>
+            <Label>Tipo de Profissional: <span style={{ color: 'red' }}>*</span></Label>
+            <Input name="tipoDeProfissional" placeholder="Vinculo com o tipo de profissional" required/>
         </InputAreaRow>
 
         <InputTextArea>
-            <Label>Descrição:</Label>
-            <Input name="descricao"/>
+            <Label>Descrição: <span style={{ color: 'red' }}>*</span></Label>
+            <Input name="descricao" placeholder="Descricão do tipo de Profissional" required/>
         </InputTextArea>
 
         <InputAreaRowCheckbox>
-            <Label>Situação:</Label>
+            <Label>Situação: <span style={{ color: 'red' }}>*</span></Label>
             <InputCheckbox 
         name="situacao" 
         type="checkbox" 
@@ -241,6 +244,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }: FormProps) => {
                 toast.warn('Situação inativa');
             }
         }}
+        required
     />
     {!isChecked && <span><MdWarning size={18} style={{ verticalAlign: 'middle' }}/> Situação inativa</span>}
         </InputAreaRowCheckbox>

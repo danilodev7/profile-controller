@@ -6,6 +6,7 @@ import Form from "./components/Form";
 import Grid from "./components/Grid";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from 'react-modal';
 
 //POR PRATICIDADE, VAMOS UTILIZAR O STYLED COMPONENTS PARA 
 //ESTILIZAR NOSSOS COMPONENTES DIRETO NO ARQUIVO
@@ -24,6 +25,8 @@ const Container = styled.div`
 
 //ESTILIZAÇÃO DO COMPONENTE TITLE
 const Title = styled.h2``;
+
+Modal.setAppElement('#root'); // #root é o elemento raiz comum
 
 //FUNÇÃO APP - COMPONENTE PRINCIPAL DA NOSSA APLICAÇÃO  
 function App() {
