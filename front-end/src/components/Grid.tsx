@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaInfo } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { format, parseISO, set } from 'date-fns';
-
+import UserInfoModal from './UserInfoModal';
+import React, { useState } from 'react';
 
 //POR PRATICIDADE, VAMOS UTILIZAR O STYLED COMPONENTS PARA 
 //ESTILIZAR NOSSOS COMPONENTES DIRETO NO ARQUIVO
@@ -23,7 +24,7 @@ const Table = styled.table`
 `;
 
 //ESTILIZAÇÃO DO COMPONENTE THEAD
-export const Thead = styled.section`
+export const Thead = styled.thead`
     background-color: #333;
     color: #fff;
     display: table-row-group;
@@ -102,20 +103,38 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
         setOnEdit(null);
         };    
 
+        const [modalIsOpen, setModalIsOpen] = useState(false);
+        const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+        const handleInfo = (item: User) => {
+            setSelectedUser(item);
+            setModalIsOpen(true);
+        }
+
+        const closeModal = () => {
+            setModalIsOpen(false);
+        }
+        
+
 
     return (
         <Table>
-
+            <UserInfoModal
+                user={selectedUser}
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+            />
             <Thead>
                 <Tr>
                    <Th>Nome</Th>
-                   <Th>Telefone</Th>
-                   <Th>E-mail</Th>
-                   <Th>Tipo de Profissão</Th>
-                   <Th onlyWeb>Descrição</Th>
+                   {/* <Th>Telefone</Th>
+                   <Th>E-mail</Th> */}
+                   <Th>Tipo</Th>
+                   {/* <Th onlyWeb>Descrição</Th> */}
                    <Th>Situação</Th>
                    <Th>Cadastro</Th>
                    <Th>Atualização</Th>
+                   <Th></Th>
                    <Th></Th>
                    <Th></Th>
                 </Tr>
@@ -127,13 +146,21 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
                 {users.map((item, i) => (
                     <Tr key={i}>
                         <Td width="15%" style={{ paddingLeft: '10px' }}>{item.nome}</Td>
-                        <Td width="10%">{item.telefone}</Td>
-                        <Td width="10%">{item.email}</Td>
+                        {/* <Td width="10%">{item.telefone}</Td>
+                        <Td width="10%">{item.email}</Td> */}
                         <Td width="15%">{item.tipoDeProfissional}</Td>
-                        <Td width="20%">{item.descricao}</Td>
+                        {/* <Td width="20%">{item.descricao}</Td> */}
                         <Td width="10%" style={{ textAlign: 'center' }}>{item.situacao ? 'Ativo' : 'Desativado'}</Td>                        <Td width="10%">{format(parseISO(item.createdAt), 'dd/MM/yy')}</Td>
                         <Td width="10%">{format(parseISO(item.updatedAt), 'dd/MM/yy')}</Td>
 
+                        {/*BOTÃO DE INFORMAÇÃO */}
+                        <Td alignCenter width="5%">
+                            <FaInfo
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleInfo(item)}
+                            />
+                        </Td>
+                        
                         {/*BOTÕES DE EDIÇÃO E EXCLUSÃO */}
                         <Td alignCenter width="5%">
                             <FaEdit
@@ -152,6 +179,7 @@ const Grid = ({ users, setUsers, setOnEdit }: { users: any[]; setUsers: React.Di
                 ))}
             </Tbody>
         </Table>
+        
     );
 };
 
